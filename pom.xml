@@ -14,17 +14,20 @@
         <main-version>1.0</main-version>
         <minor-version>0-SNAPSHOT</minor-version>
 
-        <!-- ######################################### -->
-        <!-- required to override for maven release -->
+        <!-- ##################### for maven release and coverage #################### -->
+        <!-- required to override -->
         <release.project.name>java root parent pom</release.project.name>
         <release.project.description>root parent pom for releases libs, verify code style and configuration for tests</release.project.description>
         <release.project.repository-name>java-parent-pom</release.project.repository-name>
+        <coveralls.repo.token>example token</coveralls.repo.token>
 
         <!-- not required to override -->
+
+        <coverage.exluded.classes>**/*Main.class</coverage.exluded.classes>
         <release.project.repo-owner>github.com/mikolajmitura/</release.project.repo-owner>
         <release.project.repository-url>${release.project.repo-owner}/${release.project.repository-name}</release.project.repository-url>
         <nexus-staging-maven-plugin.autoReleaseAfterClose>false</nexus-staging-maven-plugin.autoReleaseAfterClose>
-        <!-- ######################################### -->
+        <!-- ######################################################################### -->
 
         <!-- other properties -->
         <run-code-review-profile>false</run-code-review-profile>
@@ -47,7 +50,7 @@
         <plugin.git-commit-id.version>4.0.0</plugin.git-commit-id.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
 
-        <plugin.jacoco.version>0.8.5</plugin.jacoco.version>
+        <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
         <plugin.surefire.version>2.22.2</plugin.surefire.version>
         <gmavenplus-plugin.version>1.12.1</gmavenplus-plugin.version>
         <groovy.version>2.5.8</groovy.version>
@@ -60,7 +63,7 @@
         <maven-source-plugin.version>2.2.1</maven-source-plugin.version>
         <maven-javadoc-plugin.version>3.1.1</maven-javadoc-plugin.version>
 
-        <!-- code style and rules location -->
+        <!-- code checks and rules location -->
         <plugin.checkstyle.version>3.1.1</plugin.checkstyle.version>
 
         <maven-pmd-plugin.version>3.11.0</maven-pmd-plugin.version>
@@ -74,7 +77,6 @@
         <codenarc.version>2.1.0</codenarc.version>
 
         <code-style.base-dir>${project.basedir}/src/main/resources</code-style.base-dir>
-<!--     <code-style.base-dir>${project.build.directory}/code-style-rules</code-style.base-dir>-->
         <checkstyle.location>${code-style.base-dir}/checkstyle/checkstyle.xml</checkstyle.location>
         <checkstyle.suppressions.location>${code-style.base-dir}/checkstyle/suppressions.xml</checkstyle.suppressions.location>
         <pmd.location>${code-style.base-dir}/pmd/pmd.xml</pmd.location>
@@ -361,25 +363,6 @@
                     <failIfNoTests>false</failIfNoTests>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.jacoco</groupId>
-                <artifactId>jacoco-maven-plugin</artifactId>
-                <version>${plugin.jacoco.version}</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>prepare-agent</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>report</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>report</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
 
@@ -469,6 +452,65 @@
                         <version>${plugin.jacoco.version}</version>
                         <configuration>
                             <skip>true</skip>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+        <profile>
+            <!-- Test Coverage -->
+            <id>coverage</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>${jacoco-maven-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>jacoco-prepare-agent</id>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>check</id>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                                <phase>verify</phase>
+                                <configuration>
+                                    <excludes>
+                                        <exclude>${coverage.exluded.classes}</exclude>
+                                    </excludes>
+                                    <rules>
+                                        <rule>
+                                            <element>BUNDLE</element>
+                                            <limits>
+                                                <limit>
+                                                    <counter>INSTRUCTION</counter>
+                                                    <value>COVEREDRATIO</value>
+                                                    <minimum>${coverage.module.minimum}</minimum>
+                                                </limit>
+                                                <limit>
+                                                    <counter>BRANCH</counter>
+                                                    <value>COVEREDRATIO</value>
+                                                    <minimum>${coverage.module.minimum}</minimum>
+                                                </limit>
+                                            </limits>
+                                        </rule>
+                                    </rules>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.eluder.coveralls</groupId>
+                        <artifactId>coveralls-maven-plugin</artifactId>
+                        <version>4.3.0</version>
+                        <configuration>
+                            <repoToken>${coveralls.repo.token}</repoToken>
                         </configuration>
                     </plugin>
                 </plugins>
