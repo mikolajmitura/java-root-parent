@@ -22,15 +22,11 @@
         <coveralls.repo.token>example token</coveralls.repo.token>
 
         <!-- not required to override -->
-
         <coverage.exluded.classes>**/*Main.class</coverage.exluded.classes>
         <release.project.repo-owner>github.com/mikolajmitura/</release.project.repo-owner>
         <release.project.repository-url>${release.project.repo-owner}/${release.project.repository-name}</release.project.repository-url>
         <nexus-staging-maven-plugin.autoReleaseAfterClose>false</nexus-staging-maven-plugin.autoReleaseAfterClose>
         <!-- ######################################################################### -->
-
-        <!-- other properties -->
-        <run-code-review-profile>false</run-code-review-profile>
 
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
