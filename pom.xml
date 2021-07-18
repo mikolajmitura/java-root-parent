@@ -254,14 +254,13 @@
                     <targetJdk>${maven.compiler.target}</targetJdk>
                     <printFailingErrors>true</printFailingErrors>
                     <rulesets>
-                        <!-- every child project know that needs to looks in parent directory and then in checks folder -->
                         <ruleset>${pmd.location}</ruleset>
                     </rulesets>
                 </configuration>
                 <executions>
                     <execution>
                         <id>validate</id>
-                        <phase>validate</phase>
+                        <phase>compile</phase>
                         <goals>
                             <goal>check</goal>
                         </goals>
