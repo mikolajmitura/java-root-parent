@@ -41,6 +41,17 @@
         <commons-io.version>2.6</commons-io.version>
         <findbugs.version>3.0.0</findbugs.version>
 
+        <!-- test dependency management -->
+        <junit.version>4.13.2</junit.version>
+        <javafaker.version>1.0.2</javafaker.version>
+        <org.assertj.version>3.13.2</org.assertj.version>
+        <spock.version>1.2-groovy-2.4</spock.version>
+        <groovy.version>2.5.8</groovy.version>
+        <gmavenplus-plugin.version>1.8.0</gmavenplus-plugin.version>
+        <mockito.version>3.0.0</mockito.version>
+        <cglib-nodep.version>3.2.9</cglib-nodep.version>
+        <objenesis.version>2.6</objenesis.version>
+
         <!-- default plugins -->
         <plugin.scm.version>1.11.2</plugin.scm.version>
         <plugin.git-commit-id.version>4.0.0</plugin.git-commit-id.version>
@@ -49,7 +60,6 @@
         <jacoco-maven-plugin.version>0.8.5</jacoco-maven-plugin.version>
         <plugin.surefire.version>2.22.2</plugin.surefire.version>
         <gmavenplus-plugin.version>1.12.1</gmavenplus-plugin.version>
-        <groovy.version>2.5.8</groovy.version>
 
         <plugin.remote.resources.version>1.7.0</plugin.remote.resources.version>
 
@@ -151,6 +161,65 @@
             <version>${findbugs.version}</version>
         </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- TEST-->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.javafaker</groupId>
+                <artifactId>javafaker</artifactId>
+                <version>${javafaker.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.assertj</groupId>
+                <artifactId>assertj-core</artifactId>
+                <version>${org.assertj.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.mockito</groupId>
+                <artifactId>mockito-core</artifactId>
+                <version>${mockito.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-all</artifactId>
+                <version>${groovy.version}</version>
+                <type>pom</type>
+            </dependency>
+            <dependency>
+                <groupId>cglib</groupId>
+                <artifactId>cglib-nodep</artifactId>
+                <version>${cglib-nodep.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.objenesis</groupId>
+                <artifactId>objenesis</artifactId>
+                <version>${objenesis.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.spockframework</groupId>
+                <artifactId>spock-core</artifactId>
+                <version>${spock.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.spockframework</groupId>
+                <artifactId>spock-spring</artifactId>
+                <version>${spock.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-datetime</artifactId>
+                <version>${groovy.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
