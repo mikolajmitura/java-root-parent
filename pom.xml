@@ -31,8 +31,8 @@
         <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
 
         <!-- dependencies -->
         <lombok.version>1.18.12</lombok.version>
@@ -311,7 +311,8 @@
                                 <taskdef name="codenarc" classname="org.codenarc.ant.CodeNarcTask"/>
                                 <property name="antCodenarcLocation" value="${codenarc.location}"/>
                                 <property name="buildDir" value="${project.build.directory}"/>
-                                <codenarc ruleSetFiles="file:///${antCodenarcLocation}" maxPriority1Violations="0" maxPriority2Violations="0">
+                                <codenarc ruleSetFiles="file:///${antCodenarcLocation}"
+                                  maxPriority1Violations="0" maxPriority2Violations="0" maxPriority3Violations="0">
                                     <report type="html">
                                         <option name="outputFile" value="${buildDir}/CodeNarc.html" />
                                     </report>
@@ -361,19 +362,6 @@
                     <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
                 </configuration>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <release>${java.version}</release>
-                    <encoding>${project.build.sourceEncoding}</encoding>
-                    <compilerArgs>
-                        <arg>-parameters</arg>
-                    </compilerArgs>
-                </configuration>
-            </plugin>
-
             <plugin>
                 <groupId>org.codehaus.gmavenplus</groupId>
                 <artifactId>gmavenplus-plugin</artifactId>
@@ -443,6 +431,47 @@
     </reporting>
 
     <profiles>
+        <profile>
+            <id>by-jdk8</id>
+            <activation>
+                <jdk>1.8</jdk>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <configuration>
+                            <source>${java.version}</source>
+                            <target>${java.version}</target>
+                            <encoding>${project.build.sourceEncoding}</encoding>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>by-jdk11</id>
+            <activation>
+                <jdk>11</jdk>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>${maven-compiler-plugin.version}</version>
+                        <configuration>
+                            <release>${java.version}</release>
+                            <encoding>${project.build.sourceEncoding}</encoding>
+                            <compilerArgs>
+                                <arg>-parameters</arg>
+                            </compilerArgs>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
         <profile>
             <id>skip-code-review</id>
             <activation>
