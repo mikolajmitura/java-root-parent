@@ -12,7 +12,7 @@
 
     <properties>
         <main-version>1.0</main-version>
-        <minor-version>2</minor-version>
+        <minor-version>3-SNAPSHOT</minor-version>
 
         <!-- ##################### for maven release and coverage #################### -->
         <!-- required to override -->
